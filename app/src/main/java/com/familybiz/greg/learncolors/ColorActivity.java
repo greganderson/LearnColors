@@ -18,7 +18,7 @@ public class ColorActivity extends Activity {
 		final LinearLayout rootLayout = new LinearLayout(this);
 		setTheme(android.R.style.Theme_Holo_Light);
 
-		final int[] colorArray = {
+		final Integer[] colorArray = {
 				Color.BLUE,
 				Color.BLACK,
 				Color.RED,
@@ -32,7 +32,7 @@ public class ColorActivity extends Activity {
 				Color.rgb(255, 192, 203)	// pink
 		};
 
-		final ColorList colors = new ColorList(colorArray);
+		final RandomItemList<Integer> colors = new RandomItemList<Integer>(colorArray);
 
 		final TextView screenText = new TextView(this);
 		screenText.setText(R.string.screenText);
@@ -40,12 +40,12 @@ public class ColorActivity extends Activity {
 		screenText.setGravity(Gravity.CENTER);
 
 		// Set initial color
-		screenText.setBackgroundColor(colors.nextColor());
+		screenText.setBackgroundColor(colors.nextItem());
 
 		screenText.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				screenText.setBackgroundColor(colors.nextColor());
+				screenText.setBackgroundColor(colors.nextItem());
 			}
 		});
 
