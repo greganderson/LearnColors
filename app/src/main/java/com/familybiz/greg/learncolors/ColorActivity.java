@@ -19,10 +19,10 @@ public class ColorActivity extends Activity {
 			Color.YELLOW,
 			Color.WHITE,
 			Color.GRAY,
-			Color.rgb(255, 102, 0),
-			Color.rgb(128, 0, 128),
-			Color.rgb(135, 194, 175),
-			Color.rgb(255, 20, 147)
+			Color.rgb(255, 102, 0),	// bad orange
+			Color.rgb(128, 0, 128),	// purple
+			Color.rgb(139, 69, 19),	// brown
+			Color.rgb(255, 192, 203)	// pink
 	};
 
 	private LinearLayout leftLayout;
@@ -33,7 +33,7 @@ public class ColorActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		final LinearLayout rootLayout = new LinearLayout(this);
 		rootLayout.setOrientation(LinearLayout.HORIZONTAL);
-		setTheme(android.R.style.Theme_Black);
+		setTheme(android.R.style.Theme_Holo_Light);
 
 		leftLayout = new LinearLayout(this);
 		rightLayout = new LinearLayout(this);
@@ -69,6 +69,9 @@ public class ColorActivity extends Activity {
 		setContentView(rootLayout);
 	}
 
+	/**
+	 * Sets the colors for both layouts, essentially changing the whole background.
+	 */
 	private void setLayoutColor() {
 		leftLayout.setBackgroundColor(colors[color]);
 		rightLayout.setBackgroundColor(colors[color]);
