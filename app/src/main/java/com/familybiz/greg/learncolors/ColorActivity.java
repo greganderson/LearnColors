@@ -28,7 +28,7 @@ public class ColorActivity extends Activity {
 				Color.GRAY,
 				Color.rgb(255, 102, 0),		// orange
 				Color.rgb(128, 0, 128),		// purple
-				Color.rgb(139, 69, 19),		// brown
+				Color.rgb(92, 51, 23),		// brown
 				Color.rgb(255, 192, 203)	// pink
 		};
 
@@ -36,6 +36,7 @@ public class ColorActivity extends Activity {
 
 		final TextView screenText = new TextView(this);
 		screenText.setText(R.string.screenText);
+		screenText.setTextSize(20);
 		screenText.setGravity(Gravity.CENTER);
 
 		// Set initial color
