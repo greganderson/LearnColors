@@ -3,8 +3,10 @@ package com.familybiz.greg.learncolors;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 
@@ -41,7 +43,19 @@ public class ColorActivity extends Activity {
 
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
 
-		leftLayout.setOnClickListener(new View.OnClickListener() {
+
+		ImageView leftArrow = new ImageView(this);
+		ImageView rightArrow = new ImageView(this);
+		leftArrow.setImageResource(R.drawable.ic_action_previous_item);
+		rightArrow.setImageResource(R.drawable.ic_action_next_item);
+
+		LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+		imageParams.gravity = Gravity.CENTER;
+		leftLayout.addView(leftArrow, imageParams);
+		rightLayout.addView(rightArrow, imageParams);
+
+
+		leftArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				color--;
@@ -52,7 +66,7 @@ public class ColorActivity extends Activity {
 			}
 		});
 
-		rightLayout.setOnClickListener(new View.OnClickListener() {
+		rightArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				color++;
@@ -62,6 +76,7 @@ public class ColorActivity extends Activity {
 				setLayoutColor();
 			}
 		});
+
 
 		rootLayout.addView(leftLayout, layoutParams);
 		rootLayout.addView(rightLayout, layoutParams);
