@@ -3,17 +3,19 @@ package com.familybiz.greg.learncolors;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 public class ColorActivity extends Activity {
 
-	private ColorList colors;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final View rootLayout = new View(this);
+		final LinearLayout rootLayout = new LinearLayout(this);
 		setTheme(android.R.style.Theme_Holo_Light);
 
 		final int[] colorArray = {
@@ -30,17 +32,24 @@ public class ColorActivity extends Activity {
 				Color.rgb(255, 192, 203)	// pink
 		};
 
-		colors = new ColorList(colorArray);
+		final ColorList colors = new ColorList(colorArray);
+
+		final TextView screenText = new TextView(this);
+		screenText.setText(R.string.screenText);
+		screenText.setGravity(Gravity.CENTER);
 
 		// Set initial color
-		rootLayout.setBackgroundColor(colors.nextColor());
+		screenText.setBackgroundColor(colors.nextColor());
 
-		rootLayout.setOnClickListener(new View.OnClickListener() {
+		screenText.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				rootLayout.setBackgroundColor(colors.nextColor());
+				screenText.setBackgroundColor(colors.nextColor());
 			}
 		});
+
+		LinearLayout.LayoutParams screenTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+		rootLayout.addView(screenText, screenTextParams);
 
 		setContentView(rootLayout);
 	}
