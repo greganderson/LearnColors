@@ -3,7 +3,7 @@ LearnColors
 
 Summary:
 
-An android app to help little kids learn their colors
+An android app to help little kids learn their colors.
 
 
 Description:
@@ -21,7 +21,8 @@ just import the project into Android Studio and build.
 
 To submit Bugs/features/patches:
 
-Submit all bug reports, feature requests, and patches to https://github.com/greganderson/LearnColors/issues.
+Submit all bug reports, feature requests, and patches to
+https://github.com/greganderson/LearnColors/issues.
 
 	
 Author:
