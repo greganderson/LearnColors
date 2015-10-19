@@ -1,8 +1,12 @@
 package com.familybiz.greg.learncolors;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -10,12 +14,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 public class ColorActivity extends Activity {
 
-	private Pair mCurrentColor;
+    private static final String TAG = "LearnColorsSTT";
 
-	@Override
+    private Pair mCurrentColor;
+    private SpeechRecognizer sr;
+    private Intent intent;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final LinearLayout rootLayout = new LinearLayout(this);
@@ -47,18 +57,28 @@ public class ColorActivity extends Activity {
 		screenText.setBackgroundColor(mCurrentColor.key);
 
 		screenText.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				mCurrentColor = colors.nextItem();
-				screenText.setBackgroundColor(mCurrentColor.key);
-				Log.i("Color", mCurrentColor.value);
-			}
-		});
+            @Override
+            public void onClick(View view) {
+                mCurrentColor = colors.nextItem();
+                screenText.setBackgroundColor(mCurrentColor.key);
+                Log.i("Color", mCurrentColor.value);
+            }
+        });
 
 		LinearLayout.LayoutParams screenTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		rootLayout.addView(screenText, screenTextParams);
 
-		setContentView(rootLayout);
+        sr = SpeechRecognizer.createSpeechRecognizer(this);
+        sr.setRecognitionListener(new listener());
+
+        intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "voice.recognition.test");
+
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+        sr.startListening(intent);
+
+        setContentView(rootLayout);
 	}
 
 	class Pair {
@@ -69,4 +89,42 @@ public class ColorActivity extends Activity {
 			this.value = value;
 		}
 	}
+
+
+    class listener implements RecognitionListener {
+        public void onReadyForSpeech(Bundle params) {
+            Log.d(TAG, "onReadyForSpeech");
+        }
+        public void onBeginningOfSpeech() {
+            Log.d(TAG, "onBeginningOfSpeech");
+        }
+        public void onRmsChanged(float rmsdB) {
+            Log.d(TAG, "onRmsChanged");
+        }
+        public void onBufferReceived(byte[] buffer) {
+            Log.d(TAG, "onBufferReceived");
+        }
+        public void onEndOfSpeech() {
+            Log.d(TAG, "onEndofSpeech");
+        }
+        public void onError(int error) {
+            Log.d(TAG,  "error " +  error);
+            sr.destroy();
+            sr = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+            sr.setRecognitionListener(new listener());
+            sr.startListening(intent);
+        }
+        public void onResults(Bundle results) {
+            ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            if (data.contains("blue"))
+                Log.d("BAM", "GOT IT");
+        }
+        public void onPartialResults(Bundle partialResults) {
+            Log.d(TAG, "onPartialResults");
+        }
+        public void onEvent(int eventType, Bundle params) {
+            Log.d(TAG, "onEvent " + eventType);
+        }
+    }
+
 }
