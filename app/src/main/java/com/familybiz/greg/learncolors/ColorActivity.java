@@ -24,6 +24,7 @@ public class ColorActivity extends Activity {
     private Pair mCurrentColor;
     private SpeechRecognizer sr;
     private Intent intent;
+    private TextView screenText;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class ColorActivity extends Activity {
 
 		final RandomItemList<Pair> colors = new RandomItemList<Pair>(colorArray);
 
-		final TextView screenText = new TextView(this);
+		screenText = new TextView(this);
 		screenText.setText(R.string.screenText);
 		screenText.setTextSize(20);
 		screenText.setGravity(Gravity.CENTER);
@@ -68,6 +69,12 @@ public class ColorActivity extends Activity {
 		LinearLayout.LayoutParams screenTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		rootLayout.addView(screenText, screenTextParams);
 
+        startListening();
+
+        setContentView(rootLayout);
+	}
+
+    private void startListening() {
         sr = SpeechRecognizer.createSpeechRecognizer(this);
         sr.setRecognitionListener(new listener());
 
@@ -78,8 +85,7 @@ public class ColorActivity extends Activity {
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
         sr.startListening(intent);
 
-        setContentView(rootLayout);
-	}
+    }
 
 	class Pair {
 		Integer key;
@@ -116,8 +122,10 @@ public class ColorActivity extends Activity {
         }
         public void onResults(Bundle results) {
             ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            if (data.contains("blue"))
-                Log.d("BAM", "GOT IT");
+            if (data.contains(mCurrentColor.value)) {
+                screenText.callOnClick();
+                startListening();
+            }
         }
         public void onPartialResults(Bundle partialResults) {
             Log.d(TAG, "onPartialResults");
