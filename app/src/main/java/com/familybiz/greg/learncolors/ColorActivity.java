@@ -126,6 +126,9 @@ public class ColorActivity extends Activity {
                 screenText.callOnClick();
                 startListening();
             }
+            else {
+                startListening();
+            }
         }
         public void onPartialResults(Bundle partialResults) {
             Log.d(TAG, "onPartialResults");
